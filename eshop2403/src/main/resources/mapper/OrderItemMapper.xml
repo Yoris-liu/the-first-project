@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hngc.mapper.OrderItemDao">
+    <select id="findAll" parameterType="com.hngc.pojo.OrderItem"  resultType="com.hngc.pojo.OrderItem">
+        select * from order_item where 1=1
+        <if test="item_id!=null and item_id!=''">
+            and item_id=#{item_id}
+        </if>
+        <if test="order_id!=null and order_id!=''">
+            and order_id=#{order_id}
+        </if>
+        <if test="product_id!=null and product_id!=''">
+            and product_id=#{product_id}
+        </if>
+        <if test="product_name!=null and product_name!=''">
+            and product_name like concat('%',#{product_name},'%')
+        </if>
+    </select>
+    <select id="findById" parameterType="Long" resultType="com.hngc.pojo.OrderItem">
+        select * from order_item where item_id=#{id}
+    </select>
+    <insert id="save" parameterType="com.hngc.pojo.OrderItem">
+        insert into order_item(order_id,product_id,product_name,product_price,buy_num,create_time)
+        value(#{order_id},#{product_id},#{product_name},#{product_price},#{buy_num},#{create_time})
+    </insert>
+    <delete id="delete" parameterType="Long">
+        delete from order_item where item_id=#{id}
+    </delete>
+    <update id="update" parameterType="com.hngc.pojo.OrderItem">
+        update order_item
+        <trim prefix="set" suffixOverrides="," suffix="where item_id=#{item_id}">
+            <if test="order_id!=null and order_id!=''">
+                order_id=#{order_id},
+            </if>
+            <if test="product_id!=null and product_id!=''">
+                product_id=#{product_id},
+            </if>
+            <if test="product_name!=null and product_name!=''">
+                product_name=#{product_name},
+            </if>
+            <if test="product_price!=null and product_price!=''">
+                product_price=#{product_price},
+            </if>
+            <if test="buy_num!=null and buy_num!=''">
+                buy_num=#{buy_num},
+            </if>
+            <if test="create_time!=null and create_time!=''">
+                create_time=#{create_time},
+            </if>
+        </trim>
+    </update>
+</mapper>

@@ -1,0 +1,16 @@
+# Maven build output
+**/target/
+
+# IntelliJ IDEA (project-level, workspace.xml is already excluded by .idea/.gitignore)
+**/.smarttomcat/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local

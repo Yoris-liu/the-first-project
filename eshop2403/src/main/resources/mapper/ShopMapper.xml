@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hngc.mapper.ShopDao">
+    <select id="findAll" parameterType="com.hngc.pojo.Shop"  resultType="com.hngc.pojo.Shop">
+        select * from shop where 1=1
+        <if test="id!=null and id!=''">
+            and id=#{id}
+        </if>
+        <if test="shop_name!=null and shop_name!=''">
+            and shop_name like concat('%',#{shop_name},'%')
+        </if>
+        <if test="merchant_id!=null and merchant_id!=''">
+            and merchant_id=#{merchant_id}
+        </if>
+        <if test="category_id!=null and category_id!=''">
+            and category_id=#{category_id}
+        </if>
+        <if test="shop_status!=null and shop_status!=''">
+            and shop_status=#{shop_status}
+        </if>
+        <if test="deleted!=null and deleted!=''">
+            and deleted=#{deleted}
+        </if>
+    </select>
+    <select id="findById" parameterType="Long" resultType="com.hngc.pojo.Shop">
+        select * from shop where id=#{id}
+    </select>
+    <insert id="save" parameterType="com.hngc.pojo.Shop">
+        insert into shop(shop_name,shop_avatar,shop_desc,merchant_id,category_id,shop_status,address,contact_phone,contact_email,business_license,avg_score,sale_count,favorites_count,create_time,update_time,deleted)
+        value(#{shop_name},#{shop_avatar},#{shop_desc},#{merchant_id},#{category_id},#{shop_status},#{address},#{contact_phone},#{contact_email},#{business_license},#{avg_score},#{sale_count},#{favorites_count},#{create_time},#{update_time},#{deleted})
+    </insert>
+    <delete id="delete" parameterType="Long">
+        delete from shop where id=#{id}
+    </delete>
+    <update id="update" parameterType="com.hngc.pojo.Shop">
+        update shop
+        <trim prefix="set" suffixOverrides="," suffix="where id=#{id}">
+            <if test="shop_name!=null and shop_name!=''">
+                shop_name=#{shop_name},
+            </if>
+            <if test="shop_avatar!=null and shop_avatar!=''">
+                shop_avatar=#{shop_avatar},
+            </if>
+            <if test="shop_desc!=null and shop_desc!=''">
+                shop_desc=#{shop_desc},
+            </if>
+            <if test="merchant_id!=null and merchant_id!=''">
+                merchant_id=#{merchant_id},
+            </if>
+            <if test="category_id!=null and category_id!=''">
+                category_id=#{category_id},
+            </if>
+            <if test="shop_status!=null and shop_status!=''">
+                shop_status=#{shop_status},
+            </if>
+            <if test="address!=null and address!=''">
+                address=#{address},
+            </if>
+            <if test="contact_phone!=null and contact_phone!=''">
+                contact_phone=#{contact_phone},
+            </if>
+            <if test="contact_email!=null and contact_email!=''">
+                contact_email=#{contact_email},
+            </if>
+            <if test="business_license!=null and business_license!=''">
+                business_license=#{business_license},
+            </if>
+            <if test="avg_score!=null and avg_score!=''">
+                avg_score=#{avg_score},
+            </if>
+            <if test="sale_count!=null and sale_count!=''">
+                sale_count=#{sale_count},
+            </if>
+            <if test="favorites_count!=null and favorites_count!=''">
+                favorites_count=#{favorites_count},
+            </if>
+            <if test="create_time!=null and create_time!=''">
+                create_time=#{create_time},
+            </if>
+            <if test="update_time!=null and update_time!=''">
+                update_time=#{update_time},
+            </if>
+            <if test="deleted!=null and deleted!=''">
+                deleted=#{deleted},
+            </if>
+        </trim>
+    </update>
+</mapper>

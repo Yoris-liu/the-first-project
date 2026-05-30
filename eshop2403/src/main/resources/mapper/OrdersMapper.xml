@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hngc.mapper.OrdersDao">
+    <select id="findAll" parameterType="com.hngc.pojo.Orders"  resultType="com.hngc.pojo.Orders">
+        select * from orders where 1=1
+        <if test="order_id!=null and order_id!=''">
+            and order_id=#{order_id}
+        </if>
+        <if test="order_no!=null and order_no!=''">
+            and order_no like concat('%',#{order_no},'%')
+        </if>
+        <if test="user_id!=null and user_id!=''">
+            and user_id=#{user_id}
+        </if>
+        <if test="shop_id!=null and shop_id!=''">
+            and shop_id=#{shop_id}
+        </if>
+        <if test="order_status!=null and order_status!=''">
+            and order_status=#{order_status}
+        </if>
+        <if test="pay_type!=null and pay_type!=''">
+            and pay_type=#{pay_type}
+        </if>
+    </select>
+    <select id="findById" parameterType="Long" resultType="com.hngc.pojo.Orders">
+        select * from orders where order_id=#{id}
+    </select>
+    <insert id="save" parameterType="com.hngc.pojo.Orders">
+        insert into orders(order_no,user_id,shop_id,order_status,pay_type,total_price,pay_price,receiver_name,receiver_phone,receiver_address,pay_time,delivery_time,receive_time,create_time,update_time)
+        value(#{order_no},#{user_id},#{shop_id},#{order_status},#{pay_type},#{total_price},#{pay_price},#{receiver_name},#{receiver_phone},#{receiver_address},#{pay_time},#{delivery_time},#{receive_time},#{create_time},#{update_time})
+    </insert>
+    <delete id="delete" parameterType="Long">
+        delete from orders where order_id=#{id}
+    </delete>
+    <update id="update" parameterType="com.hngc.pojo.Orders">
+        update orders
+        <trim prefix="set" suffixOverrides="," suffix="where order_id=#{order_id}">
+            <if test="order_no!=null and order_no!=''">
+                order_no=#{order_no},
+            </if>
+            <if test="user_id!=null and user_id!=''">
+                user_id=#{user_id},
+            </if>
+            <if test="shop_id!=null and shop_id!=''">
+                shop_id=#{shop_id},
+            </if>
+            <if test="order_status!=null and order_status!=''">
+                order_status=#{order_status},
+            </if>
+            <if test="pay_type!=null and pay_type!=''">
+                pay_type=#{pay_type},
+            </if>
+            <if test="total_price!=null and total_price!=''">
+                total_price=#{total_price},
+            </if>
+            <if test="pay_price!=null and pay_price!=''">
+                pay_price=#{pay_price},
+            </if>
+            <if test="receiver_name!=null and receiver_name!=''">
+                receiver_name=#{receiver_name},
+            </if>
+            <if test="receiver_phone!=null and receiver_phone!=''">
+                receiver_phone=#{receiver_phone},
+            </if>
+            <if test="receiver_address!=null and receiver_address!=''">
+                receiver_address=#{receiver_address},
+            </if>
+            <if test="pay_time!=null and pay_time!=''">
+                pay_time=#{pay_time},
+            </if>
+            <if test="delivery_time!=null and delivery_time!=''">
+                delivery_time=#{delivery_time},
+            </if>
+            <if test="receive_time!=null and receive_time!=''">
+                receive_time=#{receive_time},
+            </if>
+            <if test="create_time!=null and create_time!=''">
+                create_time=#{create_time},
+            </if>
+            <if test="update_time!=null and update_time!=''">
+                update_time=#{update_time},
+            </if>
+        </trim>
+    </update>
+</mapper>

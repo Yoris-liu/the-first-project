@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hngc.mapper.CategoryDao">
+    <resultMap id="ProductWithCategory" type="com.hngc.pojo.Category">
+        <id column="category_id" property="category_id" />
+        <result column="category_name" property="category_name" />
+        <result column="category_code" property="category_code" />
+        <collection property="products" ofType="com.hngc.pojo.Product">
+            <id column="product_id" property="product_id" />
+            <result column="product_name" property="product_name" />
+            <result column="product_code" property="product_code" />
+            <result column="price" property="price" />
+        </collection>
+    </resultMap>
+    <select id="getProductByCategory" parameterType="Integer" resultMap="ProductWithCategory">
+        select c.category_id,category_name,category_code,product_id,product_name,product_code,price
+        from category c left join product p on c.category_id=p.category_id where  c.category_id=#{id}
+    </select>
+    <select id="findAll" parameterType="com.hngc.pojo.Category"  resultType="com.hngc.pojo.Category">
+        select * from category where 1=1
+        <if test="category_id!=null and category_id!=''">
+            and category_id=#{category_id}
+        </if>
+        <if test="category_name!=null and category_name!=''">
+            and category_name like concat('%',#{category_name},'%')
+        </if>
+        <if test="category_code!=null and category_code!=''">
+            and category_code like concat('%',#{category_code},'%')
+        </if>
+    </select>
+    <select id="findById" parameterType="Integer" resultType="com.hngc.pojo.Category">
+        select * from category where category_id=#{id}
+    </select>
+    <insert id="save" parameterType="com.hngc.pojo.Category">
+        insert into category(category_name,category_code,parent_id,sort_num,status,create_time,update_time)
+        value(#{category_name},#{category_code},#{parent_id},#{sort_num},#{status},#{create_time},#{update_time})
+    </insert>
+    <delete id="delete" parameterType="Integer">
+        delete from category where category_id=#{id}
+    </delete>
+    <update id="update" parameterType="com.hngc.pojo.Category">
+        update category
+        <trim prefix="set" suffixOverrides="," suffix="where category_id=#{category_id}">
+            <if test="category_name!=null and category_name!=''">
+                category_name=#{category_name},
+            </if>
+            <if test="category_code!=null and category_code!=''">
+                category_code=#{category_code},
+            </if>
+            <if test="parent_id!=null and parent_id!=''">
+                parent_id=#{parent_id},
+            </if>
+            <if test="sort_num!=null and sort_num!=''">
+                sort_num=#{sort_num},
+            </if>
+            <if test="status!=null and status!=''">
+                status=#{status},
+            </if>
+            <if test="create_time!=null and create_time!=''">
+                create_time=#{create_time},
+            </if>
+            <if test="update_time!=null and update_time!=''">
+                update_time=#{update_time},
+            </if>
+        </trim>
+    </update>
+</mapper>

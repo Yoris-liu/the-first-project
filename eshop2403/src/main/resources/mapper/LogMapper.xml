@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hngc.mapper.LogDao">
+    <select id="findAll" resultType="com.hngc.pojo.Log">
+        select * from log
+    </select>
+    <insert id="save" parameterType="com.hngc.pojo.Log">
+        insert into log(username,ip,operate_module,operate_time,class_name,method_name,method_params,return_value)
+        values(#{username},#{ip},#{operate_module},#{operate_time},#{class_name},#{method_name},#{method_params},#{return_value})
+    </insert>
+</mapper>

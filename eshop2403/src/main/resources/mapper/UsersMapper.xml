@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hngc.mapper.UsersDao">
+    <select id="login" parameterType="com.hngc.pojo.Users" resultType="com.hngc.pojo.Users">
+        select username,password from users where username=#{username} and password=#{password}
+    </select>
+    <resultMap id="OrdersWithUsers" type="com.hngc.pojo.Users">
+        <id column="user_id" property="user_id" />
+        <result column="username" property="username" />
+        <result column="real_name" property="real_name" />
+        <collection property="orders" ofType="com.hngc.pojo.Orders">
+            <id column="order_id" property="order_id" />
+            <result column="order_no" property="order_no" />
+            <result column="total_price" property="total_price" />
+            <result column="pay_price" property="pay_price" />
+            <result column="receiver_phone" property="receiver_phone" />
+        </collection>
+    </resultMap>
+    <select id="getOrdersByUsers" parameterType="String" resultMap="OrdersWithUsers">
+        select u.user_id,username,real_name,order_id,order_no,total_price,pay_price,receiver_phone
+        from users u left join orders o on u.user_id=o.user_id where  u.username=#{username}
+    </select>
+    <select id="findAll" parameterType="com.hngc.pojo.Users"  resultType="com.hngc.pojo.Users">
+        select * from users where 1=1
+        <if test="username!=null and username!=''">
+            and username  like concat('%',#{username},'%')
+        </if>
+        <if test="real_name!=null and real_name!=''">
+            and real_name like concat('%',#{real_name},'%')
+        </if>
+        <if test="gender!=null and gender!=''">
+            and gender=#{gender}
+        </if>
+    </select>
+    <select id="findById" parameterType="Integer" resultType="com.hngc.pojo.Users">
+        select * from users where user_id=#{id}
+    </select>
+    <insert id="save" parameterType="com.hngc.pojo.Users">
+        insert into users(username,password,phone,email,real_name,gender,birthday,status,create_time,update_time)
+        value(#{username},#{password},#{phone},#{email},#{real_name},#{gender},#{birthday},#{status},#{create_time},#{update_time})
+    </insert>
+    <delete id="delete" parameterType="Integer">
+        delete from users where user_id=#{id}
+    </delete>
+    <update id="update" parameterType="com.hngc.pojo.Users">
+        update users
+        <trim prefix="set" suffixOverrides="," suffix="where user_id=#{user_id}">
+            <if test="username!=null and username!=''">
+                username=#{username},
+            </if>
+            <if test="password!=null and password!=''">
+                password=#{password},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone=#{phone},
+            </if>
+            <if test="email!=null and email!=''">
+                email=#{email},
+            </if>
+            <if test="real_name!=null and real_name!=''">
+                real_name=#{real_name},
+            </if>
+            <if test="gender!=null and gender!=''">
+                gender=#{gender},
+            </if>
+            <if test="birthday!=null and birthday!=''">
+                birthday=#{birthday},
+            </if>
+            <if test="status!=null and status!=''">
+                status=#{status},
+            </if>
+            <if test="create_time!=null and create_time!=''">
+                create_time=#{create_time},
+            </if>
+            <if test="update_time!=null and update_time!=''">
+                update_time=#{update_time},
+            </if>
+        </trim>
+    </update>
+</mapper>
